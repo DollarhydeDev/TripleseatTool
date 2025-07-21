@@ -28,7 +28,7 @@ namespace TripleseatTool
                 IsActive = true,
                 EventUpdatedStartDate = new DateOnly(2025, 7, 1),
                 EventUpdatedEndDate = new DateOnly(2025, 7, 1),
-                LocationIds = new int[] { 12507 },
+                LocationIds = new int[] { exampleLocationId },
             };
             var filteredEvents = await tripleseatService.GetEventsAsync(authToken, eventFilter);
         }
