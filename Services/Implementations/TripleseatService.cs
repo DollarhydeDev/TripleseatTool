@@ -187,23 +187,4 @@ public class TripleseatService : ITripleseatService
 
         return responseObject.Event!;
     }
-    public async Task<List<Event>> GetEventsByLocationAsync(string authToken, int locationId)
-    {
-        string requestURL = $"https://api.tripleseat.com/v1/events/search.json?page=1&active=true&location_ids={locationId}";
-
-        using var httpClient = CreateHttpClientWithHeaders(authToken);
-        var response = await GetAsync(httpClient, requestURL);
-
-        var responseString = await response.Content.ReadAsStringAsync();
-        var responseObject = JsonSerializer.Deserialize<MultiEventResponse>(responseString);
-
-        if (responseObject == null) throw new Exception("Failed to deserialize events response");
-        if (responseObject.Events == null) throw new Exception("Event list was null");
-
-        var debugJson = JsonSerializer.Serialize(responseObject);
-        PrintJsonToFile(debugJson, "response1.json");
-
-        var returnedEvents = responseObject.Events.Where(e => e != null).Select(e => e!).ToList();
-        return returnedEvents;
-    }
 }

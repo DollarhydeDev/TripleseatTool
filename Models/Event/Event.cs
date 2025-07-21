@@ -219,6 +219,9 @@ public class Event
     [JsonPropertyName("managers")] // This was null so need to revisit type
     public int[]? EventManagers { get; init; }
 
+    [JsonPropertyName("lead")]
+    public Lead? EventLead { get; init; }
+
     [JsonPropertyName("selected_lead_sources")]
     public SelectedLeadSource[]? EventSelectedLeadSources { get; init; }
 

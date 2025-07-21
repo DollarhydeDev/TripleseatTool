@@ -25,12 +25,19 @@ namespace TripleseatTool
             var specificEvent = await tripleseatService.GetEventByIdAsync(authToken, exampleEventId);
             var eventFilter = new EventsFilter()
             {
+                PageNumber = 1,
                 IsActive = true,
+                ShowFinancial = false,
                 EventUpdatedStartDate = new DateOnly(2025, 7, 1),
                 EventUpdatedEndDate = new DateOnly(2025, 7, 1),
+                EventStatus = EventStatus.Closed,
+                EventOrderBy = EventOrderBy.UpdatedAt,
+                EventSortDirection = EventSortDirection.asc,
                 LocationIds = new int[] { exampleLocationId },
             };
             var filteredEvents = await tripleseatService.GetEventsAsync(authToken, eventFilter);
+
+            Console.WriteLine($"Returned event count {filteredEvents.Count()}");
         }
     }
 }
