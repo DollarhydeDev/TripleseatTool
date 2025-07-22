@@ -47,5 +47,5 @@ public class Location
     public Address[]? LocationAddresses { get; init; }
 
     [JsonPropertyName("photos")]
-    public Photo[]? LocationPhotos { get; init; }
+    public LocationPhoto[]? LocationPhotos { get; init; }
 }

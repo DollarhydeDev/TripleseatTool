@@ -2,7 +2,7 @@
 
 namespace TripleseatTool.Models;
 
-public class Attachment
+public class EventAttachment
 {
     [JsonPropertyName("content_type")]
     public string? AttachmentContentType { get; init; }

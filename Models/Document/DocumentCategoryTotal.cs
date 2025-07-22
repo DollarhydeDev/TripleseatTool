@@ -3,12 +3,12 @@ using TripleseatTool.Utilities;
 
 namespace TripleseatTool.Models;
 
-public class BillingTotal
+public class DocumentCategoryTotal
 {
     [JsonPropertyName("name")]
-    public string? CategoryTotalName { get; init; }
+    public string? DocumentCategoryTotalName { get; init; }
 
-    [JsonPropertyName("total")]
+    [JsonPropertyName("value")]
     [JsonConverter(typeof(JsonStringConverter))]
-    public string? CategoryTotalAmount { get; init; }
+    public string? DocumentCategoryTotalValue { get; init; }
 }

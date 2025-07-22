@@ -184,7 +184,7 @@ public class Event
     public string? EventType { get; init; }
 
     [JsonPropertyName("lost_reason")]
-    public LostReason? EventLostReason { get; init; }
+    public EventLostReason? EventLostReason { get; init; }
 
     [JsonPropertyName("rooms")]
     public EventRoom[]? EventRooms { get; init; }
@@ -202,10 +202,10 @@ public class Event
     public CustomField[]? EventCustomFields { get; init; }
 
     [JsonPropertyName("category_totals")]
-    public CategoryTotal[]? EventCategoryTotals { get; init; }
+    public EventCategoryTotal[]? EventCategoryTotals { get; init; }
 
     [JsonPropertyName("billing_totals")]
-    public BillingTotal[]? EventBillingTotals { get; init; }
+    public EventBillingTotal[]? EventBillingTotals { get; init; }
 
     [JsonPropertyName("owner")]
     public Owner? EventOwner { get; init; }
@@ -220,7 +220,7 @@ public class Event
     public int[]? EventManagers { get; init; }
 
     [JsonPropertyName("lead")]
-    public Lead? EventLead { get; init; }
+    public EventLead? EventLead { get; init; }
 
     [JsonPropertyName("selected_lead_sources")]
     public SelectedLeadSource[]? EventSelectedLeadSources { get; init; }
@@ -238,5 +238,5 @@ public class Event
     public StatusChange[]? EventStatusChanges { get; init; }
 
     [JsonPropertyName("attachments")]
-    public Attachment[]? EventAttachments { get; init; }
+    public EventAttachment[]? EventAttachments { get; init; }
 }

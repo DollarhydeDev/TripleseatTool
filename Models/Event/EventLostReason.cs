@@ -2,7 +2,7 @@
 
 namespace TripleseatTool.Models;
 
-public class LostReason
+public class EventLostReason
 {
     [JsonPropertyName("name")]
     public string? LostReasonName { get; init; }

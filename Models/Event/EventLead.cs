@@ -2,7 +2,7 @@
 
 namespace TripleseatTool.Models;
 
-public class Lead
+public class EventLead
 {
     [JsonPropertyName("id")]
     public int? LeadId { get; init; }

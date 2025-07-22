@@ -3,7 +3,7 @@ using TripleseatTool.Utilities;
 
 namespace TripleseatTool.Models;
 
-public class CategoryTotal
+public class EventCategoryTotal
 {
     [JsonPropertyName("name")]
     public string? CategoryTotalName { get; init; }

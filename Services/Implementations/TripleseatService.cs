@@ -128,46 +128,80 @@ public class TripleseatService : ITripleseatService
 
     public async Task<List<Event>> GetEventsAsync(string authToken)
     {
-        string requestURL = "https://api.tripleseat.com/v1/events.json";
-
+        int currentPage = 1;
+        bool allEventsProcessed = false;
+        List<Event> events = new List<Event>();
         using var httpClient = CreateHttpClientWithHeaders(authToken);
-        var response = await GetAsync(httpClient, requestURL);
 
-        var responseString = await response.Content.ReadAsStringAsync();
-        var responseObject = JsonSerializer.Deserialize<MultiEventResponse>(responseString);
+        while (!allEventsProcessed)
+        {
+            string requestURL = $"https://api.tripleseat.com/v1/events.json?page={currentPage}";
+            var response = await GetAsync(httpClient, requestURL);
 
-        if (responseObject == null) throw new Exception("Failed to deserialize events response");
-        if (responseObject.Events == null) throw new Exception("Event list was null");
+            var responseString = await response.Content.ReadAsStringAsync();
+            var responseObject = JsonSerializer.Deserialize<MultiEventResponse>(responseString);
 
-        var debugJson = JsonSerializer.Serialize(responseObject);
-        PrintJsonToFile(debugJson, "response1.json");
+            if (responseObject == null) throw new Exception("Failed to deserialize events response");
+            if (responseObject.Events == null) throw new Exception("Event list was null");
+            if (responseObject.TotalPages == 0) return events;
 
-        var returnedEvents = responseObject.Events.Where(e => e != null).Select(e => e!).ToList();
-        return returnedEvents;
+            var returnedEvents = responseObject.Events.Where(e => e != null).Select(e => e!).ToList();
+            events.AddRange(returnedEvents);
+
+            if (currentPage == responseObject.TotalPages)
+            {
+                allEventsProcessed = true;
+            }
+            else
+            {
+                currentPage += 1;
+            }
+        }
+
+        return events;
     }
     public async Task<List<Event>> GetEventsAsync(string authToken, EventsFilter eventsFilter)
     {
         var filterURL = eventsFilter.GenerateURLFromFilters();
         if (string.IsNullOrEmpty(filterURL)) return await GetEventsAsync(authToken);
 
-        string requestURL = $"https://api.tripleseat.com/v1/events/search.json{filterURL}";
-        Console.WriteLine(requestURL);
-        Console.WriteLine();
-
+        int currentPage = 1;
+        bool allEventsProcessed = false;
+        bool shouldOnlyReturnOnePage = eventsFilter.PageNumber != null;
+        List<Event> events = new List<Event>();
         using var httpClient = CreateHttpClientWithHeaders(authToken);
-        var response = await GetAsync(httpClient, requestURL);
 
-        var responseString = await response.Content.ReadAsStringAsync();
-        var responseObject = JsonSerializer.Deserialize<MultiEventResponse>(responseString);
+        while (!allEventsProcessed)
+        {
+            string requestURL = $"https://api.tripleseat.com/v1/events/search.json{filterURL}";
+            if (!shouldOnlyReturnOnePage) requestURL += $"&page={currentPage}";
+            Console.WriteLine(requestURL);
+            var response = await GetAsync(httpClient, requestURL);
 
-        if (responseObject == null) throw new Exception("Failed to deserialize events response");
-        if (responseObject.Events == null) throw new Exception("Event list was null");
+            var responseString = await response.Content.ReadAsStringAsync();
+            var responseObject = JsonSerializer.Deserialize<MultiEventResponse>(responseString);
 
-        var debugJson = JsonSerializer.Serialize(responseObject);
-        PrintJsonToFile(debugJson, "response1.json");
+            if (responseObject == null) throw new Exception("Failed to deserialize events response");
+            if (responseObject.Events == null) throw new Exception("Event list was null");
+            if (responseObject.TotalPages == 0) return events;
 
-        var returnedEvents = responseObject.Events.Where(e => e != null).Select(e => e!).ToList();
-        return returnedEvents;
+            var debugJson = JsonSerializer.Serialize(responseObject);
+            PrintJsonToFile(debugJson, "response1.json");
+
+            var returnedEvents = responseObject.Events.Where(e => e != null).Select(e => e!).ToList();
+            events.AddRange(returnedEvents);
+
+            if (currentPage == responseObject.TotalPages || shouldOnlyReturnOnePage)
+            {
+                allEventsProcessed = true;
+            }
+            else
+            {
+                currentPage += 1;
+            }
+        }
+
+        return events;
     }
     public async Task<Event> GetEventByIdAsync(string authToken, int eventId)
     {

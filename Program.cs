@@ -25,11 +25,10 @@ namespace TripleseatTool
             var specificEvent = await tripleseatService.GetEventByIdAsync(authToken, exampleEventId);
             var eventFilter = new EventsFilter()
             {
-                PageNumber = 1,
                 IsActive = true,
-                ShowFinancial = false,
-                EventUpdatedStartDate = new DateOnly(2025, 7, 1),
-                EventUpdatedEndDate = new DateOnly(2025, 7, 1),
+                ShowFinancial = true,
+                EventUpdatedStartDate = new DateOnly(2025, 1, 1),
+                EventUpdatedEndDate = new DateOnly(2025, 1, 5),
                 EventStatus = EventStatus.Closed,
                 EventOrderBy = EventOrderBy.UpdatedAt,
                 EventSortDirection = EventSortDirection.asc,

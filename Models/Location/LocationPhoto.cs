@@ -2,7 +2,7 @@
 
 namespace TripleseatTool.Models;
 
-public class Photo
+public class LocationPhoto
 {
     [JsonPropertyName("original")]
     public string? PhotoOriginal { get; init; }
